@@ -6,7 +6,7 @@
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:23 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/15 14:03:44 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:54:46 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,5 @@
 # include <stdio.h>
 
 char	*get_next_line(int fd);
-char	*ft_strdup(const char *s);
-int	ft_strlen(const char *s);
 
 # endif
