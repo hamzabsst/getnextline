@@ -6,12 +6,31 @@
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:20 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/19 12:12:59 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:40:19 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+static char *ft_reserve(int fd, char *reserve)
+{
+	char	*buffer;
+	ssize_t	byte_read;
+
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	byte_read = read(fd, buffer, BUFFER_SIZE);
+	if (byte_read == -1)
+	{
+		free (buffer);
+		return (-1);
+	}
+	buffer[byte_read] = '\0';
+	reserve = ft_strjoin(buffer, reserve);
+	free (buffer);
+	return(reserve);
+}
 char *get_next_line(int fd)
 {
 	static char	*reserve = NULL;
@@ -20,6 +39,10 @@ char *get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 
+	reserve = ft_reserve(fd, reserve);
+	if (!reserve)
+		return (NULL);
+	
 	return (line);
 }
 
