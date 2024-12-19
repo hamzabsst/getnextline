@@ -6,13 +6,13 @@
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:20 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/19 14:40:19 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:00:06 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *ft_reserve(int fd, char *reserve)
+static char	*ft_reserve(int fd, char *reserve)
 {
 	char	*buffer;
 	ssize_t	byte_read;
@@ -29,24 +29,27 @@ static char *ft_reserve(int fd, char *reserve)
 	buffer[byte_read] = '\0';
 	reserve = ft_strjoin(buffer, reserve);
 	free (buffer);
-	return(reserve);
+	return (reserve);
 }
-char *get_next_line(int fd)
+
+char	*get_next_line(int fd)
 {
 	static char	*reserve = NULL;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-
 	reserve = ft_reserve(fd, reserve);
+	while (!ft_strchr(reserve, '\n'))
+	{
+
+	}
+
 	if (!reserve)
 		return (NULL);
-	
 	return (line);
 }
-
-int main()
+/* int main()
 {
 	int fd;
 
@@ -59,4 +62,4 @@ int main()
 		free(line);
 	}
 	close(fd);
-}
+} */

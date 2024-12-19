@@ -6,7 +6,7 @@
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:16 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/19 11:51:04 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:55:24 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
+
 char	*ft_strchr(const char *s, int c)
 {
 	int	i;
@@ -36,6 +37,7 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s + i);
 	return (NULL);
 }
+
 char	*ft_strdup(const char *s)
 {
 	size_t	i;
@@ -55,6 +57,7 @@ char	*ft_strdup(const char *s)
 	results[i] = '\0';
 	return (results);
 }
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
@@ -78,6 +81,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	substr[i] = '\0';
 	return (substr);
 }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*res;
