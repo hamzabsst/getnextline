@@ -40,7 +40,7 @@ struct alloc_node
 {
 	void *ptr;
 	void *returned;
-	size_t size;
+	int size;
 	bool freed;
 	char **strings;
 	int nptrs;
@@ -196,7 +196,7 @@ int same_return(void *expected, void *res);
 int same_size(void *ptr, void *ptr_std);
 int same_string(char *expected, char *actual);
 char *my_strdup(const char *s1);
-char *my_strndup(const char *s1, size_t size);
+char *my_strndup(const char *s1, int size);
 /**
  * @brief In normal mode makes sure that you reserved enough space.
  * In strict makes sure that you reserved the correct amount of space.
@@ -205,10 +205,10 @@ char *my_strndup(const char *s1, size_t size);
  * @param expected_size The expected allocated size
  * @return If it passes or fails the test
  */
-int check_mem_size(void *ptr, size_t expected_size);
+int check_mem_size(void *ptr, int expected_size);
 
 int reset_malloc_mock();
-size_t get_malloc_size(void *ptr);
+int get_malloc_size(void *ptr);
 void malloc_set_result(void *res);
 void malloc_set_null(int nth);
 int check_leaks(void *ptr);
@@ -220,9 +220,9 @@ void show_malloc_stack(void *ptr);
 void save_traces(char **strings, int nptrs);
 
 #ifndef __APPLE__
-size_t strlcat(char *dst, const char *src, size_t size);
-size_t strlcpy(char *dst, const char *src, size_t size);
-char *strnstr(const char *haystack, const char *needle, size_t len);
+int strlcat(char *dst, const char *src, int size);
+int strlcpy(char *dst, const char *src, int size);
+char *strnstr(const char *haystack, const char *needle, int len);
 #endif
 
 #endif

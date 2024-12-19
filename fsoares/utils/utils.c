@@ -271,7 +271,7 @@ char *escape_chr(char ch)
 		char to_escape[20] = "' '";
 		to_escape[1] = ch;
 		char *res = escape_str(to_escape);
-		size_t len = strlen(res);
+		int len = strlen(res);
 		res[len - 1] = '\0';
 		return res + 1;
 	}
@@ -316,7 +316,7 @@ void add_to_error_file()
 	fclose(errors_file);
 
 	FILE *file, *final_file;
-	size_t nread;
+	int nread;
 	file = fopen("errors.log", "r");
 	final_file = fopen("error_color.log", "a");
 	if (file && final_file)
@@ -441,9 +441,9 @@ int same_string(char *expected, char *actual)
 	return 1;
 }
 
-int check_mem_size(void *ptr, size_t expected_size)
+int check_mem_size(void *ptr, int expected_size)
 {
-	size_t res = get_malloc_size(ptr);
+	int res = get_malloc_size(ptr);
 
 #ifdef STRICT_MEM
 	char *message = "expected %zu bytes, allocated %zu bytes\n";
@@ -465,9 +465,9 @@ char *my_strdup(const char *s1)
 	return (my_strndup(s1, strlen(s1) + 1));
 }
 
-char *my_strndup(const char *s1, size_t size)
+char *my_strndup(const char *s1, int size)
 {
-	size_t len;
+	int len;
 	char *result;
 
 	len = strlen(s1);
@@ -483,12 +483,12 @@ char *my_strndup(const char *s1, size_t size)
 
 #ifndef __APPLE__
 
-size_t strlcat(char *dst, const char *src, size_t dsize)
+int strlcat(char *dst, const char *src, int dsize)
 {
 	const char *odst = dst;
 	const char *osrc = src;
-	size_t n = dsize;
-	size_t dlen;
+	int n = dsize;
+	int dlen;
 
 	while (n-- != 0 && *dst != '\0')
 		dst++;
@@ -511,10 +511,10 @@ size_t strlcat(char *dst, const char *src, size_t dsize)
 	return (dlen + (src - osrc));
 }
 
-size_t strlcpy(char *dst, const char *src, size_t dsize)
+int strlcpy(char *dst, const char *src, int dsize)
 {
 	const char *osrc = src;
-	size_t nleft = dsize;
+	int nleft = dsize;
 
 	if (nleft != 0)
 	{
@@ -533,9 +533,9 @@ size_t strlcpy(char *dst, const char *src, size_t dsize)
 	return (src - osrc - 1);
 }
 
-char *strnstr(const char *s1, const char *s2, size_t n)
+char *strnstr(const char *s1, const char *s2, int n)
 {
-	size_t i, len;
+	int i, len;
 	char c = *s2;
 
 	if (c == '\0')

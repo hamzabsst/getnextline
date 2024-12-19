@@ -13,7 +13,7 @@ int cur_res_pos = 0;
 t_node allocations[MALLOC_LIMIT];
 int alloc_pos = 0;
 
-static void _add_malloc(void *ptr, size_t size, void *to_return)
+static void _add_malloc(void *ptr, int size, void *to_return)
 {
 
 	t_node new_node = allocations[alloc_pos];
@@ -59,9 +59,9 @@ static void _mark_as_free(void *ptr)
 		fprintf(errors_file, "You are trying to free a pointer that was already freed\n");
 }
 
-void *malloc(size_t size)
+void *malloc(int size)
 {
-	void *(*libc_malloc)(size_t) = (void *(*)(size_t))dlsym(RTLD_NEXT, "malloc");
+	void *(*libc_malloc)(int) = (void *(*)(int))dlsym(RTLD_NEXT, "malloc");
 	void *p = libc_malloc(size);
 	void *to_return = p;
 	if (res_pos > cur_res_pos && (long)(results[cur_res_pos]) != 1)
@@ -111,9 +111,9 @@ void malloc_set_null(int nth)
 	malloc_set_result(NULL);
 }
 
-size_t get_malloc_size(void *ptr)
+int get_malloc_size(void *ptr)
 {
-	size_t size = 0;
+	int size = 0;
 	for (int pos = 0; pos < alloc_pos; pos++)
 	{
 		t_node temp = allocations[pos];
