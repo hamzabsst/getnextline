@@ -6,56 +6,110 @@
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:20 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/19 20:00:06 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/20 10:15:53 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_reserve(int fd, char *reserve)
+static char	*ft_read(int fd, char *reserve)
 {
 	char	*buffer;
-	ssize_t	byte_read;
+	ssize_t	bytes_read;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	byte_read = read(fd, buffer, BUFFER_SIZE);
-	if (byte_read == -1)
+	bytes_read = 1;
+	while (!ft_strchr(reserve, '\n') && bytes_read > 0)
 	{
-		free (buffer);
-		return (-1);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(buffer);
+			free(reserve);
+			return (NULL);
+		}
+		buffer[bytes_read] = '\0';
+		reserve = ft_strjoin(reserve, buffer);
 	}
-	buffer[byte_read] = '\0';
-	reserve = ft_strjoin(buffer, reserve);
-	free (buffer);
+	free(buffer);
 	return (reserve);
+}
+
+static char	*ft_line(char *reserve)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	if (!reserve || reserve[i])
+		return (NULL);
+	while (reserve[i] && reserve[i] != '\n')
+		i++;
+	line = malloc(i + 2);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (reserve[i] && reserve[i] != '\n')
+	{
+		line[i] = reserve[i];
+		i++;
+	}
+	if (reserve[i] == '\n')
+		line[i++] = '\n';
+	line[i] = '\0';
+	return (line);
+}
+
+static char	*ft_remain(char *reserve)
+{
+	int		i;
+	int		j;
+	char	*remain;
+
+	i = 0;
+	while (reserve[i] && reserve[i] != '\n')
+		i++;
+	if (!reserve[i])
+	{
+		free(reserve);
+		return (NULL);
+	}
+	remain = malloc(ft_strlen(reserve) - i + 1);
+	if (!remain)
+		return (NULL);
+	i++;
+	j = 0;
+	while (reserve[i])
+		remain[j++] = reserve[i++];
+	remain[j] = '\0';
+	free(reserve);
+	return (remain);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*reserve = NULL;
+	static char	*reserve;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	reserve = ft_reserve(fd, reserve);
-	while (!ft_strchr(reserve, '\n'))
-	{
-
-	}
-
+	reserve = ft_read(fd, reserve);
 	if (!reserve)
 		return (NULL);
+	line = ft_line(reserve);
+	reserve = ft_remain(reserve);
 	return (line);
 }
-/* int main()
+/* int	main()
 {
-	int fd;
-
-	fd = open ("text.txt", O_CREAT | O_RDWR, 0777);
-	write(fd, "hamza is him", 12);
-	char *line = get_next_line(fd);
+	int		fd;
+	char	*line;
+	fd = open("text.txt", O_RDONLY);
+	line = get_next_line(fd);
 	if (line)
 	{
 		printf("%s", line);
