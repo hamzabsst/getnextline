@@ -6,7 +6,7 @@
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:20 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/20 10:15:53 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:37:48 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*ft_read(int fd, char *reserve)
 	if (!buffer)
 		return (NULL);
 	bytes_read = 1;
-	while (!ft_strchr(reserve, '\n') && bytes_read > 0)
+	while (!ft_strchr(reserve, '\n') && bytes_read != 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -45,7 +45,7 @@ static char	*ft_line(char *reserve)
 	int		i;
 
 	i = 0;
-	if (!reserve || reserve[i])
+	if (!reserve || !reserve[i])
 		return (NULL);
 	while (reserve[i] && reserve[i] != '\n')
 		i++;
@@ -104,10 +104,11 @@ char	*get_next_line(int fd)
 	reserve = ft_remain(reserve);
 	return (line);
 }
-/* int	main()
+int	main()
 {
 	int		fd;
 	char	*line;
+
 	fd = open("text.txt", O_RDONLY);
 	line = get_next_line(fd);
 	if (line)
@@ -116,4 +117,4 @@ char	*get_next_line(int fd)
 		free(line);
 	}
 	close(fd);
-} */
+}
