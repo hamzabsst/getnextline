@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbousset < hbousset@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:51:20 by hbousset          #+#    #+#             */
-/*   Updated: 2024/12/20 14:45:18 by hbousset         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:49:47 by hbousset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_read(int fd, char *reserve)
 {
@@ -92,28 +92,33 @@ static char	*ft_remain(char *reserve)
 
 char	*get_next_line(int fd)
 {
-	static char	*reserve;
+	static char	*reserve[1024];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	reserve = ft_read(fd, reserve);
-	if (!reserve)
+	reserve[fd] = ft_read(fd, reserve[fd]);
+	if (!reserve[fd])
 		return (NULL);
-	line = ft_line(reserve);
-	reserve = ft_remain(reserve);
+	line = ft_line(reserve[fd]);
+	reserve[fd] = ft_remain(reserve[fd]);
 	return (line);
 }
 /* int	main(void)
 {
 	int		fd;
+	int		fd1;
 	char	*line;
+	char	*line1;
 
-	fd = open("text.txt", O_RDWR | O_CREAT, 0777);
-	line = get_next_line(fd);
-	if (line)
+	fd = open("text.txt", O_RDONLY);
+	fd1 = open("text1.txt", O_RDONLY);
+	while ((line = get_next_line(fd)) && (line1 = get_next_line(fd1)))
 	{
 		printf("%s", line);
+		free(line);
+		printf("%s", line1);
+		free (line1);
 	}
 	close(fd);
 } */
